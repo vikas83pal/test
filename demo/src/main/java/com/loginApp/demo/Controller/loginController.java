@@ -15,15 +15,14 @@ public class loginController {
     @Autowired
     private UserService userService;
 
-
+    // Register user
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Users users){
-        userService.saveUser(users);
-        return ResponseEntity.ok("Registered");
+    public ResponseEntity<String> register(@RequestBody Users user) {
+        // Save user data, with password encoding handled in the service
+        String res= userService.saveUser(user);
+        if(res.equals("user already exist")){
+            return ResponseEntity.status(400).body(res);
+        }
+        return ResponseEntity.status(200).body(res);
     }
-
-
-
-
-
 }
