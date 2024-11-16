@@ -24,6 +24,8 @@ public class SecurityConfig {
                 // Allow public access to /api/auth/register
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register").permitAll() // Public endpoint
+                        .requestMatchers("/users").permitAll() // Public endpoint
+                        .requestMatchers("/user/**").permitAll() // Public endpoint
                         .anyRequest().authenticated() // Other requests require authentication
                 );
 
