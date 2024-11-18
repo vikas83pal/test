@@ -21,13 +21,13 @@ public class UserService {
     public String saveUser(Users user) {
 
         if (usersRepository.findByUsername(user.getUsername()) != null) {
-            return "user already exist";
+            return "User Already Exist";
         }
 
         // Encrypt the password before saving it
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
-        return "user registerd sucessfully";
+        return "User Registered Successfully";
     }
 
     public List<Users> getData() {
@@ -50,12 +50,24 @@ public class UserService {
     }
 
     public String deleteAll() {
-       try{
-        usersRepository.deleteAll();
-       return "All Users Deleted";
-       }catch(Exception e){
-        return "Error Deleting All Users";
-       }
+        try {
+            usersRepository.deleteAll();
+            return "All Users Deleted";
+        } catch (Exception e) {
+            return "Error Deleting All Users";
+        }
+    }
+
+    public String authenticateUser(Users user) {
+        Users existingUser = usersRepository.findByUsername(user.getUsername());
+        if (existingUser == null) {
+
+            return "Invalid Credentials";
+        }
+        if (passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            return "Logged in";
+        }
+        return "Invalid Credentials";
     }
 
 }
